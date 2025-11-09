@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": ["Nuxt", "Vue", "Bedrock", "TechScope", "DynamoDB", "Lambda"],
+  "ignorePaths": ["node_modules", ".nuxt", "dist"]
+}

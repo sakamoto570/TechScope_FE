@@ -1,6 +1,4 @@
-# ==========================
 # Node / Nuxt
-# ==========================
 node_modules/
 .nuxt/
 dist/
@@ -8,40 +6,17 @@ dist/
 .cache/
 .nitro/
 *.log
-*.tmp
-*.swp
 
-# ==========================
-# Environment files
-# ==========================
+# Env
 .env
 .env.*
-!.env.example   # テンプレートだけコミット可
+!.env.example
 
-# ==========================
-# Editor / OS
-# ==========================
-.DS_Store
-Thumbs.db
-.idea/
+# Editor
 .vscode/
-*.code-workspace
+.idea/
+.DS_Store
 
-# ==========================
-# AWS CDK
-# ==========================
+# CDK
 cdk.out/
 *.cdk.context.json
-
-# ==========================
-# Build artifacts
-# ==========================
-coverage/
-build/
-out/
-tmp/
-
-# AWS credentials
-*.pem
-*.key
-.aws/
