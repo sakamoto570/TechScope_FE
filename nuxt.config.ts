@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   srcDir: 'app/',
+  ssr: false,
   runtimeConfig: {
     public: {
       apiBaseUrl: 'https://your-api-id.execute-api.ap-northeast-1.amazonaws.com/prod',
