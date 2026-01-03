@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   ssr: false,
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'https://your-api-id.execute-api.ap-northeast-1.amazonaws.com/prod',
+      apiBaseUrl: 'https://es0lfofsc0.execute-api.ap-northeast-1.amazonaws.com/news',
     },
   },
 })
