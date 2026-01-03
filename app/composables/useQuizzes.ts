@@ -1,3 +1,4 @@
+// composables/useQuizzes.ts
 import { ref } from 'vue'
 
 type Quiz = {
@@ -12,20 +13,34 @@ type Quiz = {
 
 export const useQuizzes = () => {
   const quizzes = ref<Quiz[]>([])
+  const loading = ref(false)
+  const errorMessage = ref<string | null>(null)
+
   const fetchQuizzes = async () => {
     const config = useRuntimeConfig()
-    const { data, error } = await useLazyFetch<{ items: Quiz[] }>(
-      `${config.public.apiBaseUrl}/quizzes`,
-      { method: 'GET' }
-    )
+    const url = `${config.public.apiBaseUrl}/quizzes`
 
-    if (!error.value && data.value?.items) {
-      quizzes.value = data.value.items
+    loading.value = true
+    errorMessage.value = null
+
+    const { data, error } = await useLazyFetch<Quiz[]>(url, {
+      method: 'GET',
+    })
+
+    if (error.value) {
+      console.error('fetchQuizzes error', error.value)
+      errorMessage.value = error.value.message ?? 'クイズ取得に失敗しました'
+    } else if (data.value) {
+      quizzes.value = data.value
     }
+
+    loading.value = false
   }
 
   return {
     quizzes,
+    loading,
+    errorMessage,
     fetchQuizzes,
   }
 }
