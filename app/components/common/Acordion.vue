@@ -35,6 +35,12 @@ const isOpen = ref(false)
   background: #f7f7f7;
   border: none;
   cursor: pointer;
+  align-items: center;
+  text-align: left;
+}
+
+.icon {
+  padding: 8px;
 }
 
 .accordion-body {
