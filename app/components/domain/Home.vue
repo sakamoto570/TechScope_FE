@@ -40,7 +40,9 @@
         <ul>
           <li v-for="(quiz, index) in otherQuizzes" :key="quiz.id ?? index" class="quizes-item">
             {{ quiz.title }}
-            <a :href="quiz.url" target="_blank">リンク</a>
+            <a :href="quiz.url" target="_blank"
+              ><img src="~/assets/icons/link.png" class="link-icon"
+            /></a>
             <CommonAcordion>
               <template #title>問題：{{ quiz.question }}</template>
               <CommonRadioGroup
