@@ -52,6 +52,14 @@
                 class="quizes-radio-group"
               />
               <CommonButton class="button" @click="submit(quiz)">選択</CommonButton>
+              <div
+                v-if="quiz.result"
+                :class="quiz.result === '正解' ? 'text-green' : 'text-red'"
+                class="result"
+              >
+                {{ quiz.result }}
+                <div class="explanation">{{ quiz.rationale }}</div>
+              </div>
             </CommonAcordion>
           </li>
         </ul>
