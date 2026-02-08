@@ -51,7 +51,7 @@
                 :name="quiz.id + '-old'"
                 class="quizes-radio-group"
               />
-              <CommonButton class="button">選択</CommonButton>
+              <CommonButton class="button" @click="submit(quiz)">選択</CommonButton>
             </CommonAcordion>
           </li>
         </ul>
