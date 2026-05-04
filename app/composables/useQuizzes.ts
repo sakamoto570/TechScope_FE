@@ -6,22 +6,27 @@ export type ApiQuiz = {
   answerIndex: number
   rationale: string
   difficulty: string
-  content: string
+  content?: string
   title: string
   url: string
-  id: string // "QUIZ#NEWS#2026-01-03T08:59:43.000Z"
+  id: string
+
+  // 追加想定
+  publishedAt?: string
+  source?: string
+  newsId?: string
 }
 
-// 画面用に selectedIndex を追加
 export type Quiz = ApiQuiz & {
   selectedIndex: number | null
-  result: string
+  result?: string
 }
 
 export const useQuizzes = () => {
   const quizzes = ref<Quiz[]>([])
   const todaysQuizzes = ref<Quiz[]>([])
   const otherQuizzes = ref<Quiz[]>([])
+  const mediumQuizzes = ref<Quiz[]>([])
   const loading = ref(false)
   const errorMessage = ref<string | null>(null)
 
@@ -30,31 +35,35 @@ export const useQuizzes = () => {
       date.getDate()
     ).padStart(2, '0')}`
 
-  const extractDateFromKey = (key: string) => {
-    const parts = key.split('#')
-    return parts[parts.length - 1] ?? ''
-  }
+  const isOnOrAfterYesterday = (publishedAt?: string) => {
+    if (!publishedAt) return false
 
-  const isOnOrAfterYesterdayFromKey = (key?: string) => {
-    if (!key) return false
-    const dateStr = extractDateFromKey(key)
-    const d = new Date(dateStr)
+    const d = new Date(publishedAt)
     if (isNaN(d.getTime())) return false
+
     const today = new Date()
     const yesterday = new Date(today)
     yesterday.setDate(today.getDate() - 1)
+
     return toYMD(d) >= toYMD(yesterday)
   }
 
-  const getKey = (q: any) => q.pk ?? q.PK ?? q.id ?? q.ID ?? ''
+  const isMedium = (q: Quiz) => {
+    return q.source === 'medium' || q.url.includes('medium.com')
+  }
 
   const partitionQuizzes = (data: Quiz[]) => {
     todaysQuizzes.value = []
     otherQuizzes.value = []
+    mediumQuizzes.value = []
 
     data.forEach((q) => {
-      const key = getKey(q as any)
-      if (isOnOrAfterYesterdayFromKey(key)) {
+      if (isMedium(q)) {
+        mediumQuizzes.value.push(q)
+        return
+      }
+
+      if (isOnOrAfterYesterday(q.publishedAt)) {
         todaysQuizzes.value.push(q)
       } else {
         otherQuizzes.value.push(q)
@@ -74,10 +83,10 @@ export const useQuizzes = () => {
         method: 'GET',
       })
 
-      // ここで selectedIndex を生やす
       const mapped: Quiz[] = data.map((q) => ({
         ...q,
         selectedIndex: null,
+        result: '',
       }))
 
       quizzes.value = mapped
@@ -94,6 +103,7 @@ export const useQuizzes = () => {
     quizzes,
     todaysQuizzes,
     otherQuizzes,
+    mediumQuizzes,
     loading,
     errorMessage,
     fetchQuizzes,

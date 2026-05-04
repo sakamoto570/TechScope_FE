@@ -68,6 +68,40 @@
         <p>以前の記事はありません</p>
       </div>
     </CommonAcordion>
+    <CommonAcordion>
+      <template #title>Midium</template>
+      <div v-if="mediumQuizzes.length">
+        <ul>
+          <li v-for="(quiz, index) in mediumQuizzes" :key="quiz.id ?? index" class="quizes-item">
+            {{ quiz.title }}
+            <a :href="quiz.url" target="_blank"
+              ><img src="~/assets/icons/link.png" class="link-icon"
+            /></a>
+            <CommonAcordion>
+              <template #title>問題：{{ quiz.question }}</template>
+              <CommonRadioGroup
+                v-model="quiz.selectedIndex"
+                :choices="quiz.choices"
+                :name="quiz.id + '-old'"
+                class="quizes-radio-group"
+              />
+              <CommonButton class="button" @click="submit(quiz)">選択</CommonButton>
+              <div
+                v-if="quiz.result"
+                :class="quiz.result === '正解' ? 'text-green' : 'text-red'"
+                class="result"
+              >
+                {{ quiz.result }}
+                <div class="explanation">{{ quiz.rationale }}</div>
+              </div>
+            </CommonAcordion>
+          </li>
+        </ul>
+      </div>
+      <div v-else>
+        <p>以前の記事はありません</p>
+      </div>
+    </CommonAcordion>
   </div>
 </template>
 
@@ -76,10 +110,11 @@ import { onMounted, watch } from 'vue'
 import { useQuizzes } from '../../composables/useQuizzes'
 import type { Quiz } from '../../composables/useQuizzes'
 
-const { todaysQuizzes, otherQuizzes, loading, errorMessage, fetchQuizzes } = useQuizzes()
+const { todaysQuizzes, otherQuizzes, mediumQuizzes, loading, errorMessage, fetchQuizzes } =
+  useQuizzes()
 
-watch([todaysQuizzes, otherQuizzes], ([t, o]) => {
-  console.log('Quizzes updated:', { todays: t, other: o })
+watch([todaysQuizzes, otherQuizzes, mediumQuizzes], ([t, o, m]) => {
+  console.log('Quizzes updated:', { todays: t, other: o, medium: m })
 })
 
 const submit = (quiz: Quiz) => {
