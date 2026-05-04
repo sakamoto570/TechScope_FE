@@ -68,6 +68,7 @@
         <p>以前の記事はありません</p>
       </div>
     </CommonAcordion>
+    <p class="mt-6 title">■Mediumの記事（翻訳や会員登録が必要なものあり）</p>
     <CommonAcordion>
       <template #title>Midium</template>
       <div v-if="mediumQuizzes.length">
